@@ -965,9 +965,9 @@ double DegMinSecToDegree(double x)
     double seconds=(minutes-asx)*100;
   asx = asx / 60;
   seconds = seconds / 3600;
-  deg_double = round_double(deg_double);
-  asx = round_double(asx);
-  seconds = round_double(seconds);
+//   deg_double = round_double(deg_double);
+//   asx = round_double(asx);
+//   seconds = round_double(seconds);
     double Degree = deg_double + (asx) +(seconds);
     return(Degree);
 }
