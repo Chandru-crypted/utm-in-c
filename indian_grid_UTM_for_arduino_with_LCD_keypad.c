@@ -994,6 +994,7 @@ double print_and_take_latlong(){
           keypressed = NO_KEY;
           printString = inputDouble;
           print_stuff_2nd_row();
+		  delay(2000);
           return (inputDouble);
         }
       }
