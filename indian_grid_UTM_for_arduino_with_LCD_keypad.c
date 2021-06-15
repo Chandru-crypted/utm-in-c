@@ -35,8 +35,8 @@ char keymap[numRows][numCols]={
   {'.', '0', '#', 'D'}
 };
 //Code that shows the the keypad connections to the arduino terminals
-byte rowPins[numRows] = {5, 4, 3, 2}; //Rows 0 to 3
-byte colPins[numCols]= {8, 9 ,10, 11}; //Columns 0 to 3
+byte rowPins[numRows] = {23, 14, 3, 15}; 
+byte colPins[numCols] = {19, 18, 5, 17};
 //initializes an instance of the Keypad class
 Keypad myKeypad= Keypad(makeKeymap(keymap), rowPins, colPins, numRows, numCols);
 
@@ -314,6 +314,7 @@ void A_routine(){
   latlonA = take_latlong();
   IG_A = from_latlon_to_IG(latlonA.latitude, latlonA.longitude);
   print_IG(IG_A);
+  initprint();
 }
 
 void B_routine(){
@@ -322,6 +323,7 @@ void B_routine(){
   IG_B = take_IG();
   latlonB = to_latlon_from_IG(IG_B);
   print_latlon(latlonB);
+  initprint();
 }
 
 void C_routine(){
@@ -330,6 +332,7 @@ void C_routine(){
   latlonA = take_latlong();
   UTM_A = from_latlon(latlonA.latitude, latlonA.longitude);
   print_UTM(UTM_A);
+  initprint();
 }
 
 void D_routine(){
@@ -338,6 +341,7 @@ void D_routine(){
   UTM_B = take_UTM();
   latlonB = to_latlon(UTM_B);
   print_latlon(latlonB);
+  initprint();
 }
 
 
@@ -965,9 +969,9 @@ double DegMinSecToDegree(double x)
     double seconds=(minutes-asx)*100;
   asx = asx / 60;
   seconds = seconds / 3600;
-//   deg_double = round_double(deg_double);
-//   asx = round_double(asx);
-//   seconds = round_double(seconds);
+  deg_double = round_double(deg_double);
+  asx = round_double(asx);
+  seconds = round_double(seconds);
     double Degree = deg_double + (asx) +(seconds);
     return(Degree);
 }
@@ -994,7 +998,7 @@ double print_and_take_latlong(){
           keypressed = NO_KEY;
           printString = inputDouble;
           print_stuff_2nd_row();
-		  delay(2000);
+      delay(2000);
           return (inputDouble);
         }
       }
