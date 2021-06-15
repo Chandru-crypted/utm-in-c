@@ -950,12 +950,15 @@ String print_and_take_zone_num_IG(){
 
 double round_double(double var)
 {
-  // the 10000 is for 5 digits round off
+	// 76.821347 * 100000 = 7682134.7
+	// round(7682134.7) =  7682135
+	// 7682135 / 100000 = 76.82135
+   // the 100000 is for 5 digits round off
     // 37.66666 * 100 =3766.66
     // 3766.66 + .5 =3767.16    for rounding off value
     // then type cast to int so value is 3767
     // then divided by 100 so the value converted into 37.67
-    double value = (int)(var * 100000 + .5);
+    double value = (int)(round(var * 100000));
     return (double)value / 100000;
 }
 
