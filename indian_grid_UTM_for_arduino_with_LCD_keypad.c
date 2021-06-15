@@ -22,7 +22,7 @@
 
 // Set the LCD address to 0x27 for a 16 chars and 2 line display
 LiquidCrystal_I2C lcd(0x27, 16, 2);
-// initialize the library with the numbers of the interface pins
+// initialize the library with the numbers of the interface M_PIns
 
 
 const byte numRows= 4; //number of rows on the keypad
@@ -136,6 +136,7 @@ void initprint(){
   lcd.setCursor(0,1);
   lcd.print("lat long to utm"); 
   delay(2000);
+  lcd.setCursor(0, 0);
   lcd.print("Press D for ");
   lcd.setCursor(0,1);
   lcd.print("utm to lat long");
@@ -778,26 +779,24 @@ IG_coord take_IG(){
   int temp = 0;
   printString = "Enter zone num";
   IG_inp.zone_char = print_and_take_zone_num_IG();
-  if (IG_inp.zone_char == '1A'){
-	  temp = 1;
+  if (IG_inp.zone_char == "1A"){
+    temp = 1;
+
   }
-  else if (IG_inp.zone_char == '2A'){
-	  temp = 2;
+  else if (IG_inp.zone_char == "2A"){
+    temp = 2;
   }
-  else if (IG_inp.zone_char == '2A'){
-	  temp = 2;
+  else if (IG_inp.zone_char == "2B"){
+    temp = 3;
   }
-  else if (IG_inp.zone_char == '2B'){
-	  temp = 3;
+  else if (IG_inp.zone_char == "3A"){
+    temp = 4;
   }
-  else if (IG_inp.zone_char == '3A'){
-	  temp = 4;
-  }
-  else if (IG_inp.zone_char == '4A'){
-	  temp = 5;
+  else if (IG_inp.zone_char == "4A"){
+    temp = 5;
   }
   else{
-	temp = 0;
+  temp = 0;
   }
   IG_inp.zone_number = temp;
   printString = "Enter easting"; 
@@ -808,15 +807,14 @@ IG_coord take_IG(){
 }
 
 latloncoord to_latlon_from_IG(struct IG_coord IG_conv){
-  from math import atan2, atan, pow, sqrt, pi, degrees, exp, sin
+//  from math import atan2, atan, pow, sqrt, pi, degrees, exp, sin
   double E = IG_conv.easting;
   double N = IG_conv.northing;
   double FE = 2743196.4;
   double FN = 914398.8;
   double e = 0.081472981;
   double e_2 = 0.00676866;
-  double FE = 2743195.5;
-  double FN = 914398.5;
+ 
   double a = 6377301.243;
   double k = 0.99878641;
   double latod = 0.00;
@@ -857,12 +855,16 @@ latloncoord to_latlon_from_IG(struct IG_coord IG_conv){
   double lato = deg_to_rad(latod);
   double longo = deg_to_rad(longod);
   double n = sin(lato);
+  double mo = (cos(lato) / pow(1 - ((e_2)*pow(sin(lato), 2)), 0.5));
+  double to = (tan(M_PI / 4 - lato / 2)) / pow((1-(e*sin(lato)))/(1 + (e*sin(lato))), (e/2));
+
   double F = mo/(n*pow(to, n));
   double ro = a*F*pow(to, n)*k;
   double r_dash = sqrt(pow(E - FE, 2) + pow(ro - (N - FN), 2));
+  double theta_dash=0.0;
   // assigning the sign of r_dash based on the sign of n
   if (n >= 0){
-    if !(r_dash >= 0)
+    if (!(r_dash >= 0))
       r_dash = (-1.0) * (r_dash);
   }
   else{
@@ -885,13 +887,13 @@ latloncoord to_latlon_from_IG(struct IG_coord IG_conv){
   double lon = rad_to_deg((theta_dash/n) + longo);
   double t_dash = pow(r_dash/(a*k*F) , 1/n);
   // write based on n sign assign theta
-  double lat = ((pi/2) - (2 * atan(t_dash)));
+  double lat = ((M_PI/2) - (2 * atan(t_dash)));
   double inter = 0;
   // iterating through the for loop again and again 
   // for 10 times
   for(int i = 0; i < 10; i++){
     inter = ((1 - (e * sin(lat)))/(1 + (e* sin(lat))));
-    lat = (pi/2) - (2*atan(t_dash* pow(inter,(e/2))));
+    lat = (M_PI/2) - (2*atan(t_dash* pow(inter,(e/2))));
   }
   lat = rad_to_deg(lat);
   struct latloncoord latlonconv;
@@ -961,8 +963,8 @@ double DegMinSecToDegree(double x)
     int amin=minutes;
     double asx=amin;
     double seconds=(minutes-asx)*100;
-	asx = asx / 60;
-	seconds = seconds / 3600;
+  asx = asx / 60;
+  seconds = seconds / 3600;
   deg_double = round_double(deg_double);
   asx = round_double(asx);
   seconds = round_double(seconds);
