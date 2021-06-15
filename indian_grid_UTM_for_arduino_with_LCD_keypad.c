@@ -778,25 +778,26 @@ IG_coord take_IG(){
   int temp = 0;
   printString = "Enter zone num";
   IG_inp.zone_char = print_and_take_zone_num_IG();
-  switch (IG_inp.zone_char)){
-    case ("1A"):
-      temp = 1;
-      break;
-    case ("2A"):
-      temp = 2;
-      break;
-    case ("2B"):
-      temp = 3;
-      break;
-    case ("3A"):
-      temp = 4;
-      break;
-    case ("4A"):
-      temp = 5;
-      break;
-    default:
-      temp = 0;
-      break;
+  if (IG_inp.zone_char == '1A'){
+	  temp = 1;
+  }
+  else if (IG_inp.zone_char == '2A'){
+	  temp = 2;
+  }
+  else if (IG_inp.zone_char == '2A'){
+	  temp = 2;
+  }
+  else if (IG_inp.zone_char == '2B'){
+	  temp = 3;
+  }
+  else if (IG_inp.zone_char == '3A'){
+	  temp = 4;
+  }
+  else if (IG_inp.zone_char == '4A'){
+	  temp = 5;
+  }
+  else{
+	temp = 0;
   }
   IG_inp.zone_number = temp;
   printString = "Enter easting"; 
@@ -959,9 +960,9 @@ double DegMinSecToDegree(double x)
     double minutes=(x-deg)*100;
     int amin=minutes;
     double asx=amin;
-  asx = asx / 60;
     double seconds=(minutes-asx)*100;
-  seconds = seconds / 3600;
+	asx = asx / 60;
+	seconds = seconds / 3600;
   deg_double = round_double(deg_double);
   asx = round_double(asx);
   seconds = round_double(seconds);
